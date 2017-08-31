@@ -1,8 +1,18 @@
-# Removing Search Guard
+# Disabling or Removing Search Guard
 
-In order to remove Search Guard you need to
+In order to disable Search Guard without removing it, add the following line to `elasticsearch.yml`:
 
-* Deletr or remove the plugins/search-guard-5 folder from all nodes
+```
+searchguard.disabled: true
+```
+
+Disabling Search Guard requires a full cluster restart, since transport layer TLS will also be disabled. You don't need to remove the Search Guard specific settings from `elasticsearch.yml`.
+
+**Note: If you disable Search Guard, the Search Guard configuration index will also be exposed. Please use this feature carefully.**
+
+In order to remove Search Guard completely you need to
+
+* Delete or remove the plugins/search-guard-5 folder from all nodes
 * Delete or comment the Search Guard configuration entries from elasticsearch.yml
 
 A full cluster restart is required for removing Search Guard completely. Since transport traffic is TLS encrypted, you can't perform a rolling restart. Nodes running with TLS cannot talk to nodes running with TLS anymore, so you would end up with a split cluster (TLS / non-TLS).
